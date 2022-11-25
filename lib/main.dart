@@ -69,7 +69,23 @@ class _IntroductionPageState extends State<IntroductionPage> {
     'assets/images/statue.png',
     'assets/images/athlete.png',
   ];
+
+  List<String> buttonText = ['Next', 'Next', 'Get Started'];
   int pictureIndex = 0;
+
+  changePage() {
+    setState(() {
+      pictureIndex = 1;
+    });
+  }
+
+  changePage2() {
+    setState(() {
+      pictureIndex = 2;
+    });
+  }
+
+  goToHome() {}
 
   final introKey = GlobalKey<IntroductionScreenState>();
   @override
@@ -83,16 +99,33 @@ class _IntroductionPageState extends State<IntroductionPage> {
               image: AssetImage(pagePictures[pictureIndex]), fit: BoxFit.fill)),
       child: IntroductionScreen(
         globalBackgroundColor: Color.fromARGB(0, 207, 90, 90),
+        dotsDecorator: const DotsDecorator(
+          color: Colors.white,
+          activeColor: Colors.blue,
+        ),
         key: introKey,
+        initialPage: 1,
+        overrideNext: null,
         globalFooter: SizedBox(
           width: double.infinity,
           height: 60,
           child: ElevatedButton(
-            onPressed: (() {}),
-            child: Text('Next'),
+            onPressed: () {
+              if (pictureIndex < 2) {
+                setState(() {
+                  pictureIndex++;
+                });
+              } else if (pictureIndex == 2) {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const HomePage()));
+              }
+            },
+            child: Text(buttonText[pictureIndex]),
           ),
         ),
-        showSkipButton: true,
+        showSkipButton: false,
+        showBackButton: false,
+        showDoneButton: false,
         skip: const Text('Skip'),
         done: const Text('Done'),
         next: const Text('Next'),
@@ -113,11 +146,11 @@ class _IntroductionPageState extends State<IntroductionPage> {
           ),
           PageViewModel(
             title: 'The first page',
-            body: 'Get the latest news \n from reliable sources',
+            body: 'Get the latest news \n from second page',
           ),
           PageViewModel(
             title: 'The first page',
-            body: 'Get the latest news \n from reliable sources',
+            body: 'Get the latest news \n from third page',
           ),
         ],
       ),
